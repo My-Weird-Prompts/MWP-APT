@@ -63,8 +63,8 @@ it with `gh secret set MWP_APT_DISPATCH_TOKEN -R My-Weird-Prompts/MWP-Announcer`
    builds such as `android-v*`) to `packages.yml`, push. The push publishes.
 3. `Version` in the control file must rise every release; `Package` names must be unique.
 
-`My-Weird-Prompts/MWP-FM-Linux` (Package `mwp-fm`, `mwp-fm_1.0-1_all.deb` on v1.0) has a `.deb`
-but the repo is private (checked 2026-11-17), so it is not listed.
+`My-Weird-Prompts/MWP-FM-Linux` (Package `mwp-fm`, `mwp-fm_1.0-1_all.deb` on v1.0) was private; Daniel had it
+made public on 2026-11-17 and it is listed.
 
 ## Secrets (GitHub, this repo)
 

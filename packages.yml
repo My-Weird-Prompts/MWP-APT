@@ -15,6 +15,5 @@ packages:
   # Also has android-v* tags/releases, which tag_prefix `v` skips (android-v1.1 does not start with "v").
   - repo: My-Weird-Prompts/MWP-Announcer
     tag_prefix: v
-  # MWP-FM-Linux (Package mwp-fm, v1.0 has mwp-fm_1.0-1_all.deb) is NOT listed: the repo is private
-  # (checked 2026-11-17), and listing it would publish its .deb publicly and need RELEASES_READ_TOKEN.
-  # To add: set secret RELEASES_READ_TOKEN, then `- repo: My-Weird-Prompts/MWP-FM-Linux`.
+  # MWP FM desktop app (Package mwp-fm). Repo made public 2026-11-17 so github.token can read its releases.
+  - repo: My-Weird-Prompts/MWP-FM-Linux
