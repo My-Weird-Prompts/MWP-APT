@@ -1,0 +1,44 @@
+name: Publish APT repo
+
+# No schedule on purpose: releases are rare, so a publish runs only when asked
+# (an app repo's release workflow sends repository_dispatch type `publish`) or when the
+# package list or scripts change.
+on:
+  push:
+    branches: [main]
+    paths: [packages.yml, key.gpg, key.asc, "scripts/**", "site/**", ".github/workflows/publish.yml"]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Rebuild the index even if no new release was found
+        type: boolean
+        default: true
+  repository_dispatch:
+    types: [publish]
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: sudo apt-get install -y --no-install-recommends apt-utils python3-yaml
+
+      - name: Build and publish
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ vars.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ vars.R2_BUCKET || 'mwppublic' }}
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+          GH_TOKEN: ${{ secrets.RELEASES_READ_TOKEN || github.token }}
+          FORCE: ${{ (github.event_name == 'workflow_dispatch' && !inputs.force) && '0' || '1' }}
+        run: scripts/build.sh

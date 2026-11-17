@@ -1,0 +1,20 @@
+# Packages published to the APT repo at https://cdn.myweirdprompts.com/apt
+#
+# Each entry is a GitHub repo whose releases carry a .deb. scripts/sync_releases.py takes
+# the newest non-draft release (whose tag starts with `tag_prefix`, if set) that has a
+# .deb asset and adds it to the pool as <Package>_<Version>_<Arch>.deb, named from the
+# package's own control fields, not the asset name.
+#
+# Publish: an app repo's release workflow sends repository_dispatch `publish`, or
+# `gh workflow run publish.yml -R My-Weird-Prompts/MWP-APT`, or a push to this file.
+#
+# Rules: `Version` in the control file must increase every release (APT ignores the tag);
+# `Package` must be unique across entries. Removing an entry removes the package.
+
+packages:
+  # Also has android-v* tags/releases, which tag_prefix `v` skips (android-v1.1 does not start with "v").
+  - repo: My-Weird-Prompts/MWP-Announcer
+    tag_prefix: v
+  # MWP-FM-Linux (Package mwp-fm, v1.0 has mwp-fm_1.0-1_all.deb) is NOT listed: the repo is private
+  # (checked 2026-11-17), and listing it would publish its .deb publicly and need RELEASES_READ_TOKEN.
+  # To add: set secret RELEASES_READ_TOKEN, then `- repo: My-Weird-Prompts/MWP-FM-Linux`.
